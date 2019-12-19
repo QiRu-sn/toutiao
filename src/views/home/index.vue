@@ -1,5 +1,11 @@
 <template>
-  <div>主页面</div>
+  <el-container>
+    <el-aside class="aside">Aside</el-aside>
+    <div>
+       <el-header>Header</el-header>
+       <el-main>Main</el-main>
+    </div>
+  </el-container>
 </template>
 
 <script>
@@ -8,6 +14,5 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang='less' scoped>
 </style>
