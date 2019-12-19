@@ -4,7 +4,7 @@
       <asideCom></asideCom>
     </el-aside>
       <el-container style="background-color:#f2f3f5">
-        <el-header style="padding:0">
+        <el-header style="margin:0">
           <headerCom></headerCom>
         </el-header>
           <el-main>Main</el-main>
@@ -13,13 +13,7 @@
 </template>
 
 <script>
-import asideCom from '../../components/home/aside'
-import headerCom from '../../components/home/header'
 export default {
-  components: {
-    asideCom,
-    headerCom
-  }
 }
 </script>
 
