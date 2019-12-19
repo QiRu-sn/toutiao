@@ -5,8 +5,8 @@
               <img src="../../assets/img/logo_index.png" alt="">
           </div>
           <el-form :model='ruleForm' :rules='rules' ref="myForm">
-              <el-form-item prop="phone">
-                  <el-input v-model="ruleForm.phone" placeholder="请输入手机号"></el-input>
+              <el-form-item prop="mobile">
+                  <el-input v-model="ruleForm.mobile" placeholder="请输入手机号"></el-input>
               </el-form-item>
               <el-form-item prop="code">
                   <el-input v-model="ruleForm.code" placeholder="验证码" style="width:68%"></el-input>
@@ -28,13 +28,13 @@ export default {
   data () {
     return {
       ruleForm: {
-        phone: '',
+        mobile: '',
         code: '',
         check: false
       },
       rules: {
-        phone: [{ required: true, message: '请输入手机号码', trigger: 'blur' }, { pattern: /^1[3456789]\d{9}$/ }],
-        code: [{ required: true, message: '请输入验证码', trigger: 'blur' }, { pattern: /^\d{6}$/ }],
+        mobile: [{ required: true, message: '请输入手机号码', trigger: 'blur' }, { pattern: /^1[3456789]\d{9}$/, message: '手机号码输入有误', trigger: 'blur' }],
+        code: [{ required: true, message: '请输入验证码', trigger: 'blur' }, { pattern: /^\d{6}$/, message: '验证码输入错误', trigger: 'blur' }],
         check: [{ validator (rule, value, callback) {
           value ? callback() : callback(new Error('您需要了解用户协议及条款并勾选'))
         } }]
@@ -44,9 +44,22 @@ export default {
   },
   methods: {
     login () {
-      this.$refs.myForm.validate(function (isOK) {
+      this.$refs.myForm.validate(isOK => {
         if (isOK) {
-          console.log('校验成功')
+          this.$axios.post('/authorizations', this.ruleForm).then(res => {
+            window.localStorage.setItem('token', res.data.data.token)
+            this.$router.push('/')
+          }).catch(
+            () => {
+              this.$alert('您的输入有误，请重新输入', '错误提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  this.ruleForm.mobile = ''
+                  this.ruleForm.code = ''
+                }
+              })
+            }
+          )
         }
       })
     }
