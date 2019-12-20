@@ -20,12 +20,12 @@
             <!-- 右侧头像区域 -->
             <img :src="userInfo.photo?userInfo.photo:defaultImg" alt="">
             <!-- 右侧下拉菜单选项区域 -->
-            <el-dropdown>
+            <el-dropdown @command='clickDropdown'>
                     <span class="el-dropdown-link">{{userInfo.name}}<i class="el-icon-arrow-down el-icon--right"></i></span>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>个人信息</el-dropdown-item>
-                        <el-dropdown-item>git地址</el-dropdown-item><hr/>
-                        <el-dropdown-item>退出</el-dropdown-item>
+                        <el-dropdown-item command='info'>个人信息</el-dropdown-item>
+                        <el-dropdown-item command='git'>git地址</el-dropdown-item><hr/>
+                        <el-dropdown-item command='logOut'>退出</el-dropdown-item>
                     </el-dropdown-menu>
             </el-dropdown>
         </el-row>
@@ -41,6 +41,20 @@ export default {
       defaultImg: require('../../assets/img/user.jpeg')
     }
   },
+  methods: {
+    //  点击头部个人信息区域触发事件
+    clickDropdown (command) {
+      if (command === 'info') {
+
+      } else if (command === 'git') {
+        window.location.href = 'https://github.com/QiRu-sn/toutiao'
+      } else if (command === 'logOut') {
+        window.localStorage.removeItem('token')
+        this.$router.push('/login')
+      }
+    }
+  },
+  //  加载个人信息
   created () {
     var token = window.localStorage.getItem('token')
     this.$axios({
