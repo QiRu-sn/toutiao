@@ -18,10 +18,10 @@
             <!-- 右侧消息提示区域 -->
             <el-tooltip style="margin-right:10px" content="消息" placement="bottom"><span>消息</span></el-tooltip>
             <!-- 右侧头像区域 -->
-            <img src="../../assets/img/user.jpeg" alt="">
+            <img :src="userInfo.photo?userInfo.photo:defaultImg" alt="">
             <!-- 右侧下拉菜单选项区域 -->
             <el-dropdown>
-                    <span class="el-dropdown-link">这就是最好的<i class="el-icon-arrow-down el-icon--right"></i></span>
+                    <span class="el-dropdown-link">{{userInfo.name}}<i class="el-icon-arrow-down el-icon--right"></i></span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>个人信息</el-dropdown-item>
                         <el-dropdown-item>git地址</el-dropdown-item><hr/>
@@ -35,7 +35,23 @@
 
 <script>
 export default {
-
+  data () {
+    return {
+      userInfo: {},
+      defaultImg: require('../../assets/img/user.jpeg')
+    }
+  },
+  created () {
+    var token = window.localStorage.getItem('token')
+    this.$axios({
+      url: '/user/profile',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then(res => {
+      this.userInfo = res.data.data
+    })
+  }
 }
 </script>
 
