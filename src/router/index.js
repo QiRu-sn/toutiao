@@ -11,7 +11,13 @@ const routes = [
   },
   {
     path: '/home',
-    component: home
+    component: home,
+    children: [
+      {
+        path: '',
+        component: home
+      }
+    ]
   },
   {
     path: '/login',
