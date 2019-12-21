@@ -47,19 +47,9 @@ export default {
       this.$refs.myForm.validate(isOK => {
         if (isOK) {
           this.$axios.post('/authorizations', this.ruleForm).then(res => {
-            window.localStorage.setItem('token', res.data.data.token)
+            window.localStorage.setItem('token', res.data.token)
             this.$router.push('/')
-          }).catch(
-            () => {
-              this.$alert('您的输入有误，请重新输入', '错误提示', {
-                confirmButtonText: '确定',
-                callback: action => {
-                  this.ruleForm.mobile = ''
-                  this.ruleForm.code = ''
-                }
-              })
-            }
-          )
+          })
         }
       })
     }

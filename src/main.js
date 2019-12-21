@@ -3,7 +3,7 @@ import App from './App.vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './style/index.less'
-import axios from 'axios'
+import axios from './utils/request'
 import comIndex from './components/index.js'
 import router from './permission'
 
@@ -11,7 +11,7 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 Vue.use(comIndex)
-axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'
+
 Vue.prototype.$axios = axios
 
 new Vue({

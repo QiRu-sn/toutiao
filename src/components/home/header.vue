@@ -63,7 +63,7 @@ export default {
         Authorization: `Bearer ${token}`
       }
     }).then(res => {
-      this.userInfo = res.data.data
+      this.userInfo = res.data
     })
   }
 }
