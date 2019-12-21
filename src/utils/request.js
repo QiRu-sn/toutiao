@@ -6,9 +6,12 @@ axios.interceptors.request.use(function (config) {
   let token = window.localStorage.getItem('token')
   // 统一设置请求头参数Authorization
   config.headers['Authorization'] = `Bearer ${token}`
-  console.log(config)
-
   return config
+}, function () {})
+
+axios.interceptors.response.use(function (response) {
+  // 响应数据处理
+  return response.data ? response.data : {}
 }, function () {})
 
 export default axios
