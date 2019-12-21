@@ -20,7 +20,7 @@
             <!-- 右侧头像区域 -->
             <img :src="userInfo.photo?userInfo.photo:defaultImg" alt="">
             <!-- 右侧下拉菜单选项区域 -->
-            <el-dropdown @command='clickDropdown' style="margin-right:10px">
+            <el-dropdown @command='clickDropdown'>
                     <span class="el-dropdown-link">{{userInfo.name}}<i class="el-icon-arrow-down el-icon--right"></i></span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item command='info'>个人信息</el-dropdown-item>
@@ -49,7 +49,6 @@ export default {
       } else if (command === 'git') {
         window.location.href = 'https://github.com/QiRu-sn/toutiao'
       } else if (command === 'logOut') {
-        // 系统退出
         window.localStorage.removeItem('token')
         this.$router.push('/login')
       }
