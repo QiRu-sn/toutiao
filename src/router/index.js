@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import home from '../views/home'
 import login from '../views/login'
 import homelist from '../views/home/home.vue'
+import comment from '../views/comment'
 Vue.use(VueRouter)
 
 const routes = [
@@ -17,6 +18,10 @@ const routes = [
       {
         path: '',
         component: homelist
+      },
+      {
+        path: '/home/comment',
+        component: comment
       }
     ]
   },

@@ -4,10 +4,10 @@
       <asideCom></asideCom>
     </el-aside>
       <el-container style="background-color:#f2f3f5">
-        <el-header style="margin:0">
+        <el-header style="padding:0">
           <headerCom></headerCom>
         </el-header>
-          <el-main>
+          <el-main style="padding: 0 10px">
             <router-view></router-view>
           </el-main>
       </el-container>

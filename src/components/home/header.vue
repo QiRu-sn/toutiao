@@ -73,6 +73,7 @@ export default {
 .headerContainer{
     height: 50px;
     background-color: #fff;
+    padding-right: 10px;
     .left{
         margin-left: 10px;
         i{
