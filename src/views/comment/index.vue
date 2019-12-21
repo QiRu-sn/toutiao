@@ -10,8 +10,10 @@
               <el-table-column label="总评论数" prop="total_comment_count"></el-table-column>
               <el-table-column label="粉丝评论数" prop="fans_comment_count"></el-table-column>
               <el-table-column label="操作">
-                  <el-button type="text">修改</el-button>
-                  <el-button type="text">关闭</el-button>
+                  <template slot-scope="obj">
+                    <el-button type="text">修改</el-button>
+                    <el-button type="text" @click='openClose(obj.row)'>{{obj.row.comment_status?'关闭':'打开'}}</el-button>
+                  </template>
               </el-table-column>
           </el-table>
       </el-card>
@@ -38,6 +40,21 @@ export default {
     },
     formatterStatus (row, column, cellValue, index) {
       return cellValue ? '正常' : '关闭'
+    },
+    openClose (row) {
+      let msg = row.comment_status ? '关闭' : '打开'
+      this.$confirm(`您确定要${msg}评论吗?`, '提示').then(() => {
+        this.$axios({
+          url: '/comments/status',
+          method: 'put',
+          params: { article_id: row.id },
+          data: {
+            allow_comment: !row.comment_status
+          }
+        }).then(res => {
+          this.loadData()
+        })
+      })
     }
   },
   created () {
