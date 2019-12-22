@@ -38,7 +38,7 @@ export default {
         this.list = res.data.results
       })
     },
-    formatterStatus (row, column, cellValue, index) {
+    formatterStatus (row, column, cellValue) {
       return cellValue ? '正常' : '关闭'
     },
     openClose (row) {

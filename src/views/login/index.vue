@@ -6,17 +6,17 @@
           </div>
           <el-form :model='ruleForm' :rules='rules' ref="myForm">
               <el-form-item prop="mobile">
-                  <el-input v-model="ruleForm.mobile" placeholder="请输入手机号"></el-input>
+                  <el-input autofocus='true' v-model="ruleForm.mobile" placeholder="请输入手机号"></el-input>
               </el-form-item>
               <el-form-item prop="code">
-                  <el-input v-model="ruleForm.code" placeholder="验证码" style="width:68%"></el-input>
+                  <el-input  v-model="ruleForm.code" placeholder="验证码" style="width:68%"></el-input>
                   <el-button plain style="float:right;width:30%">发送验证码</el-button>
               </el-form-item>
               <el-form-item prop="check">
                   <el-checkbox v-model="ruleForm.check" >我已阅读并同意用户协议和隐私条款</el-checkbox>
               </el-form-item>
               <el-form-item>
-                  <el-button @click='login' type="primary" style="width:100%">登录</el-button>
+                  <el-button  @click='login' type="primary" style="width:100%">登录</el-button>
               </el-form-item>
           </el-form>
       </el-card>
@@ -48,7 +48,7 @@ export default {
         if (isOK) {
           this.$axios.post('/authorizations', this.ruleForm).then(res => {
             window.localStorage.setItem('token', res.data.token)
-            this.$router.push('/')
+            this.$router.push('/home')
           })
         }
       })
