@@ -16,6 +16,17 @@
                   </template>
               </el-table-column>
           </el-table>
+          <el-row type="flex" justify="center" style='height:60px' align='middle'>
+            <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="page.total"
+                :page-size='page.pageSize'
+                :current-page='page.currentPage'
+                @current-change='changePage'
+                >
+            </el-pagination>
+          </el-row>
       </el-card>
   </div>
 </template>
@@ -24,18 +35,24 @@
 export default {
   data () {
     return {
-      list: []
+      list: [],
+      page: {
+        currentPage: 1,
+        pageSize: 10,
+        total: 0
+      }
     }
   },
   methods: {
     loadData () {
       this.$axios({
         url: '/articles',
-        params: { response_type: 'comment' }
+        params: { response_type: 'comment', page: this.page.currentPage, per_page: this.page.pageSize }
       }).then(res => {
-        console.log(res)
-
         this.list = res.data.results
+        this.page.currentPage = res.data.page
+        this.page.pageSize = res.data.per_page
+        this.page.total = res.data.total_count
       })
     },
     formatterStatus (row, column, cellValue) {
@@ -55,6 +72,11 @@ export default {
           this.loadData()
         })
       })
+    },
+    // 分页功能
+    changePage (newPage) {
+      this.page.currentPage = newPage
+      this.loadData()
     }
   },
   created () {

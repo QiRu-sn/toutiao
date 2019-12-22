@@ -12,7 +12,7 @@ axios.interceptors.request.use(function (config) {
   return config
 }, function () {})
 
-// 处理数据太长失真问题
+// 处理数据失真问题
 axios.defaults.transformResponse = [function (data) {
   return JSONBigInt.parse(data)
 }]
