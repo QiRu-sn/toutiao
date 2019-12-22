@@ -4,6 +4,7 @@ import home from '../views/home'
 import login from '../views/login'
 import homelist from '../views/home/home.vue'
 import comment from '../views/comment'
+import material from '../views/material'
 Vue.use(VueRouter)
 
 const routes = [
@@ -22,6 +23,9 @@ const routes = [
       {
         path: '/home/comment',
         component: comment
+      }, {
+        path: '/home/material',
+        component: material
       }
     ]
   },
