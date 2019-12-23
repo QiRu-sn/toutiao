@@ -24,6 +24,13 @@
               </div>
             </el-tab-pane>
         </el-tabs>
+        <el-pagination class='imgPage' @current-change='changePage'
+            :current-page='page.currentPage'
+            :page-size='page.pageSize'
+            :total='page.total'
+            background
+            layout="prev, pager, next">
+        </el-pagination>
       </el-row>
   </el-card>
 </template>
@@ -33,7 +40,12 @@ export default {
   data () {
     return {
       activeName: 'all',
-      list: []
+      list: [],
+      page: {
+        currentPage: 1,
+        pageSize: 12,
+        total: 0
+      }
     }
   },
   methods: {
@@ -41,13 +53,20 @@ export default {
       this.$axios({
         url: '/user/images',
         params: {
-          collect: this.activeName === 'collect'
+          collect: this.activeName === 'collect',
+          page: this.page.currentPage,
+          per_page: this.page.pageSize
         }
       }).then(res => {
         this.list = res.data.results
+        this.page.total = res.data.total_count
       })
     },
     changeTab () {
+      this.getMaterial()
+    },
+    changePage (newPage) {
+      this.page.currentPage = newPage
       this.getMaterial()
     }
   },
@@ -85,5 +104,9 @@ export default {
     background-color: #f4f5f6;
   }
 }
+}
+.imgPage{
+  display: flex;
+  justify-content: center;
 }
 </style>
