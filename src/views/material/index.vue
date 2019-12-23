@@ -15,8 +15,8 @@
                 <el-card class="img-card" v-for="item in list" :key='item.id' :body-style="{ padding: '0px' }">
                   <img :src="item.url" alt="">
                   <el-row class="imgIco">
-                    <i class='el-icon-star-on'></i>
-                    <i class="el-icon-delete-solid"></i>
+                    <i @click='collandcan(item)' :style="{color:item.is_collected?'red':'#000'}" class='el-icon-star-on'></i>
+                    <i @click='delImg(item)' class="el-icon-delete-solid"></i>
                   </el-row>
                 </el-card>
               </div>
@@ -75,6 +75,7 @@ export default {
       this.page.currentPage = newPage
       this.getMaterial()
     },
+    // 上传图片素材
     uploadImg (params) {
       this.loading = true
       let data = new FormData()
@@ -86,6 +87,29 @@ export default {
       }).then(res => {
         this.loading = false
         this.getMaterial()
+      })
+    },
+    // 取消或收藏素材
+    collandcan (item) {
+      this.$axios({
+        url: `/user/images/${item.id}`,
+        method: 'put',
+        data: {
+          collect: !item.is_collected
+        }
+      }).then(res => {
+        this.getMaterial()
+      })
+    },
+    // 删除图片素材
+    delImg (item) {
+      this.$confirm('您确定要删除这张图片吗？').then(() => {
+        this.$axios({
+          method: 'delete',
+          url: `/user/images/${item.id}`
+        }).then(() => {
+          this.getMaterial()
+        })
       })
     }
   },
@@ -120,6 +144,7 @@ export default {
     align-items: center;
     height:30px;
     background-color: #f4f5f6;
+    cursor: pointer;
   }
 }
 }
