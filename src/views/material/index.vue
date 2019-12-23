@@ -10,7 +10,7 @@
           </el-upload>
         </el-row>
         <el-tabs v-model="activeName" type="card" class="tabs" @tab-click='changeTab'>
-            <el-tab-pane label="全部" name='all'>
+            <el-tab-pane primary label="全部" name='all'>
               <div class="imgList">
                 <el-card class="img-card" v-for="item in list" :key='item.id' :body-style="{ padding: '0px' }">
                   <img :src="item.url" alt="">
@@ -25,6 +25,10 @@
               <div class="imgList">
                 <el-card class="img-card" v-for="item in list" :key='item.id' :body-style="{ padding: '0px' }">
                   <img :src="item.url" alt="">
+                  <el-row class="imgIco">
+                    <i @click='collandcan(item)' :style="{color:item.is_collected?'red':'#000'}" class='el-icon-star-on'></i>
+                    <i @click='delImg(item)' class="el-icon-delete-solid"></i>
+                  </el-row>
                 </el-card>
               </div>
             </el-tab-pane>
