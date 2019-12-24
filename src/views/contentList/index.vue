@@ -36,7 +36,7 @@
       </el-card>
       <el-card>
         <el-row slot="header" class="clearfix">
-            <span>共找到62278条符合条件的内容</span>
+            <span>共找到{{page.total}}条符合条件的内容</span>
         </el-row>
         <el-row v-for="item in list" :key='item.id.toString()' style="border-bottom:1px dashed #ccc;padding-bottom:10px;padding-top:10px;">
             <el-col :span='4'>
@@ -60,6 +60,17 @@
                 </el-link>
             </el-col>
         </el-row>
+        <el-row type="flex" justify="center" align="middle" style="height:60px;">
+            <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="page.total"
+                :current-page="page.currentPage"
+                :page-size="page.pageSize"
+                @current-change='changePage'
+                >
+            </el-pagination>
+        </el-row>
       </el-card>
   </div>
 </template>
@@ -76,7 +87,12 @@ export default {
         dateRange: []
       },
       list: [],
-      defalutImg: require('../../assets/img/404.png')
+      defalutImg: require('../../assets/img/404.png'),
+      page: {
+        total: 0,
+        pageSize: 10,
+        currentPage: 1
+      }
     }
   },
   methods: {
@@ -95,15 +111,27 @@ export default {
         params
       }).then(res => {
         this.list = res.data.results
+        this.page.total = res.data.total_count
       })
     },
     // 搜索筛选
     changeContent () {
+      this.page.currentPage = 1
+      this.getPageContent()
+    },
+    // 分页功能
+    changePage (newPage) {
+      this.page.currentPage = newPage
+      this.getPageContent()
+    },
+    getPageContent () {
       let params = {
         status: this.searchForm.status === 5 ? null : this.searchForm.status,
         channel_id: this.searchForm.channel_id,
         begin_pubdate: this.searchForm.dateRange ? this.searchForm.dateRange[0] : null,
-        end_pubdate: this.searchForm.dateRange > 1 ? this.searchForm.dateRange[1] : null
+        end_pubdate: this.searchForm.dateRange > 1 ? this.searchForm.dateRange[1] : null,
+        page: this.page.currentPage,
+        per_page: this.page.pageSize
       }
       this.getContent(params)
     }
@@ -127,7 +155,7 @@ export default {
   },
   created () {
     this.getChannels()
-    this.getContent()
+    this.getContent({ page: 1, per_page: 10 })
   }
 }
 </script>
