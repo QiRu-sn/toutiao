@@ -6,23 +6,18 @@
           </bread-crumb>
             <el-form>
                 <el-form-item label="文章状态 :">
-                    <el-tabs class="tabs" type="card" >
-                        <el-tab-pane label="全部"></el-tab-pane>
-                        <el-tab-pane label="草稿"></el-tab-pane>
-                        <el-tab-pane label="待审核"></el-tab-pane>
-                        <el-tab-pane label="审核通过"></el-tab-pane>
-                        <el-tab-pane label="审核失败"></el-tab-pane>
-                     </el-tabs>
+                    <el-radio-group v-model="searchForm.status">
+                        <el-radio :label="5">全部</el-radio>
+                        <el-radio :label="0">草稿</el-radio>
+                        <el-radio :label="1">待审核</el-radio>
+                        <el-radio :label="2">审核通过</el-radio>
+                        <el-radio :label="3">审核失败</el-radio>
+                    </el-radio-group>
+                    {{searchForm.status}}
                 </el-form-item>
                 <el-form-item label="频道列表 :">
                     <el-select  placeholder="请选择">
-                        <el-option label='开发者资讯' value='develop'></el-option>
-                        <el-option label='ios' value='ios'></el-option>
-                        <el-option label='c++' value='c++'></el-option>
-                        <el-option label='android' value='android'></el-option>
-                        <el-option label='css' value='css'></el-option>
-                        <el-option label='数据库' value='sql'></el-option>
-                        <el-option label='区块链' value='blockchain'></el-option>
+                        <el-option v-for="item in channels" :key="item.id" :label='item.name' :value='item.id'></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label='时间选择 :'>
@@ -44,16 +39,16 @@
         <el-row slot="header" class="clearfix">
             <span>共找到62278条符合条件的内容</span>
         </el-row>
-        <el-row>
+        <el-row v-for="item in list" :key='item.id.toString()' style="border-bottom:1px dashed #ccc;padding-bottom:10px;padding-top:10px;">
             <el-col :span='4'>
-                <img src="../../assets/img/pic_bg.png" alt="">
+                <img style="width:200px;height:150px;" :src="item.cover.images.length?item.cover.images[0]:defalutImg" alt="">
             </el-col>
-            <el-col :span='18'>
-                <el-row>123456</el-row>
+            <el-col :span='18' style="height:150px; line-height:40px;">
+                <el-row>{{item.title}}</el-row>
                 <el-row>
-                    <el-button type="primary" plain>已发表</el-button>
+                    <el-tag style="width:100px;height:35px;font-size:14px;text-align:center">{{item.status|filterStatus}}</el-tag>
                 </el-row>
-                <el-row>123</el-row>
+                <el-row style="font-size:12px;color:#999">{{item.pubdate}}</el-row>
             </el-col>
             <el-col :span='2'>
                 <el-link :underline="false" style="margin-right:20px;">
@@ -74,8 +69,52 @@
 export default {
   data () {
     return {
-      value: ''
+      value: '',
+      channels: [],
+      searchForm: {
+        status: 5
+      },
+      list: [],
+      defalutImg: require('../../assets/img/404.png')
     }
+  },
+  methods: {
+    getChannels () {
+      this.$axios({
+        url: '/channels'
+      }).then(res => {
+        this.channels = res.data.channels
+      })
+    },
+    getContent () {
+      this.$axios({
+        url: '/articles'
+      }).then(res => {
+        console.log(res)
+        this.list = res.data.results
+      })
+    }
+  },
+  filters: {
+    //   状态过滤器
+    filterStatus (value) {
+      switch (value) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '已发表'
+        case 3:
+          return '审核失败'
+        default:
+          break
+      }
+    }
+  },
+  created () {
+    this.getChannels()
+    this.getContent()
   }
 }
 </script>
