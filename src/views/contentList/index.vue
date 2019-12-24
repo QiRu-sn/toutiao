@@ -54,7 +54,7 @@
                     <i class="el-icon-edit"></i>
                     编辑
                 </el-link>
-                <el-link :underline="false">
+                <el-link :underline="false"  @click='delContent(item.id)'>
                     <i class="el-icon-delete"></i>
                     删除
                 </el-link>
@@ -134,6 +134,20 @@ export default {
         per_page: this.page.pageSize
       }
       this.getContent(params)
+    },
+    delContent (id) {
+      this.$confirm('您确定要删除吗?').then(() => {
+        this.$axios({
+          method: 'delete',
+          url: `/articles/${id.toString()}`
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.getPageContent()
+        })
+      })
     }
   },
   filters: {
