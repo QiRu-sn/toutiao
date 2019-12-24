@@ -45,7 +45,7 @@
             <el-col :span='18' style="height:150px; line-height:40px;">
                 <el-row>{{item.title}}</el-row>
                 <el-row>
-                    <el-tag style="width:100px;height:35px;font-size:14px;text-align:center">{{item.status|filterStatus}}</el-tag>
+                    <el-tag :type="item.status|filterType" style="width:100px;height:35px;font-size:14px;text-align:center">{{item.status|filterStatus}}</el-tag>
                 </el-row>
                 <el-row style="font-size:12px;color:#999">{{item.pubdate}}</el-row>
             </el-col>
@@ -148,6 +148,21 @@ export default {
           return '已发表'
         case 3:
           return '审核失败'
+        default:
+          break
+      }
+    },
+    // 设置改变各类型标签颜色过滤器
+    filterType (value) {
+      switch (value) {
+        case 0:
+          return 'warning'
+        case 1:
+          return 'info'
+        case 2:
+          return ''
+        case 3:
+          return 'danger'
         default:
           break
       }
