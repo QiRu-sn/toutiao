@@ -6,7 +6,7 @@
           </bread-crumb>
             <el-form>
                 <el-form-item label="文章状态 :">
-                    <el-radio-group v-model="searchForm.status" @change='changeContent'>
+                    <el-radio-group v-model="searchForm.status" >
                         <el-radio :label="5">全部</el-radio>
                         <el-radio :label="0">草稿</el-radio>
                         <el-radio :label="1">待审核</el-radio>
@@ -15,13 +15,13 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="频道列表 :">
-                    <el-select  placeholder="请选择" v-model="searchForm.channel_id" @change='changeContent'>
+                    <el-select  placeholder="请选择" v-model="searchForm.channel_id" >
                         <el-option v-for="item in channels" :key="item.id" :label='item.name' :value='item.id'></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label='时间选择 :'>
                     <template>
-                        <div class="block"  @change='changeContent'>
+                        <div class="block" >
                           <el-date-picker
                             v-model="searchForm.dateRange"
                             value-format='yyyy-MM-dd'
@@ -185,6 +185,15 @@ export default {
   created () {
     this.getChannels()
     this.getContent({ page: 1, per_page: 10 })
+  },
+  // 深度监听筛选事件
+  watch: {
+    searchForm: {
+      deep: true,
+      handler () {
+        this.getPageContent()
+      }
+    }
   }
 }
 </script>
