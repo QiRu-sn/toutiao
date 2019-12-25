@@ -3,9 +3,6 @@ import VueRouter from 'vue-router'
 import home from '../views/home'
 import login from '../views/login'
 import homelist from '../views/home/home.vue'
-import comment from '../views/comment'
-import material from '../views/material'
-import contentlist from '../views/contentList'
 Vue.use(VueRouter)
 
 const routes = [
@@ -23,14 +20,18 @@ const routes = [
       },
       {
         path: '/home/comment',
-        component: comment
+        component: () => import('../views/comment')
       }, {
         path: '/home/material',
-        component: material
+        component: () => import('../views/material')
       },
       {
         path: '/home/articles',
-        component: contentlist
+        component: () => import('../views/contentList')
+      },
+      {
+        path: '/home/publish',
+        component: () => import('../views/publish')
       }
     ]
   },
