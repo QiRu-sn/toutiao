@@ -50,7 +50,7 @@
                 <el-row style="font-size:12px;color:#999">{{item.pubdate}}</el-row>
             </el-col>
             <el-col :span='2'>
-                <el-link :underline="false" style="margin-right:20px;">
+                <el-link :underline="false" style="margin-right:20px;" @click='editContent(item.id)'>
                     <i class="el-icon-edit"></i>
                     编辑
                 </el-link>
@@ -138,6 +138,7 @@ export default {
       }
       this.getContent(params)
     },
+    // 删除文章内容
     delContent (id) {
       this.$confirm('您确定要删除吗?').then(() => {
         this.$axios({
@@ -151,6 +152,10 @@ export default {
           this.getPageContent()
         })
       })
+    },
+    // 编辑文章内容
+    editContent (id) {
+      this.$router.push(`/home/publish/${id.toString()}`)
     }
   },
   filters: {

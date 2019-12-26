@@ -58,6 +58,24 @@ export default {
       }
     }
   },
+  watch: {
+    $route: function (to, from) {
+      if (to.params.articleID) {
+        // 修改
+      } else {
+        // 发布
+        this.formData = {
+          title: '',
+          content: '',
+          cover: {
+            type: 0,
+            images: []
+          },
+          channel_id: null
+        }
+      }
+    }
+  },
   methods: {
     //   获取频道列表
     getChannels () {

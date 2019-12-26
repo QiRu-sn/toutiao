@@ -32,6 +32,10 @@ const routes = [
       {
         path: '/home/publish',
         component: () => import('../views/publish')
+      },
+      {
+        path: '/home/publish/:articleID',
+        component: () => import('../views/publish')
       }
     ]
   },
