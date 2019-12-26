@@ -9,10 +9,7 @@
             </el-form-item>
             <el-form-item label="内容"  prop='content' style="margin-top:50px">
                 <div class="edit_container">
-                    <!-- <quill-editor v-model="formData.content"
-                        style="width:80%;height:400px;margin-left:100px;margin-bottom:50px;">
-                    </quill-editor> -->
-                    <el-input type="textarea" v-model="formData.content" style="width:80%;rows:50;margin-left:50px;margin-bottom:50px;"></el-input>
+                    <quill-editor v-model="formData.content" style="width:80%;height:400px;margin-left:100px;margin-bottom:50px;"></quill-editor>
                 </div>
             </el-form-item>
             <el-form-item label="封面">
@@ -58,8 +55,10 @@ export default {
       }
     }
   },
+  // 监听路径
   watch: {
     $route: function (to, from) {
+      // 存在articleID则为修改
       if (to.params.articleID) {
         // 修改
       } else {
