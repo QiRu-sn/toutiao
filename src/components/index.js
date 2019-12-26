@@ -8,6 +8,7 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 // 引入发表文章时封面插件
 import coverImg from './publish/cover.vue'
+import uploadCover from './publish/upload.vue'
 
 export default {
   install (Vue) {
@@ -16,5 +17,6 @@ export default {
     Vue.component('bread-crumb', breadCrumb)
     Vue.component('quill-editor', quillEditor)
     Vue.component('coverImg', coverImg)
+    Vue.component('uploadCover', uploadCover)
   }
 }

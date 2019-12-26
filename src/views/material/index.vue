@@ -127,7 +127,7 @@ export default {
 .imgList{
   display: flex;
   flex-wrap: wrap;
-  justify-content: statr;
+  justify-content: start;
 .img-card{
   width:200px;
   height:200px;

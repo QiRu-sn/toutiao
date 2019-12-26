@@ -7,7 +7,7 @@
             </div>
         </div>
         <el-dialog :visible="visibleDialog" @close="closeDialog">
-
+            <uploadCover></uploadCover>
         </el-dialog>
     </div>
 </template>
