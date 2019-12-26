@@ -16,7 +16,7 @@
                 </div>
             </el-form-item>
             <el-form-item label="封面">
-                <el-radio-group style="margin-left:70px;" v-model='channels'>
+                <el-radio-group style="margin-left:70px;" v-model="formData.cover.type">
                     <el-radio :label="1">单图</el-radio>
                     <el-radio :label="3">三图</el-radio>
                     <el-radio :label="0">无图</el-radio>
@@ -29,8 +29,8 @@
                 </el-select>
             </el-form-item>
             <el-form-item style="padding-left:100px;" >
-                <el-button type="primary" @click='getAritcles'>发表</el-button>
-                <el-button  @click='getAritcles'>存入草稿</el-button>
+                <el-button type="primary" @click='getAritcles()'>发表</el-button>
+                <el-button  @click='getAritcles(true)'>存入草稿</el-button>
             </el-form-item>
         </el-form>
     </el-card>
@@ -45,7 +45,7 @@ export default {
         title: '',
         content: '',
         cover: {
-          type: null,
+          type: 0,
           images: []
         },
         channel_id: ''
@@ -67,11 +67,24 @@ export default {
         this.channels = res.data.channels
       })
     },
-    getAritcles () {
+    getAritcles (draft) {
       // 手动校验
       this.$refs.myForm.validate(isOK => {
         if (isOK) {
-          console.log('校验通过')
+          // 校验通过则调用接口发表文章
+          this.$axios({
+            url: '/articles',
+            method: 'post',
+            params: { draft },
+            data: this.formData
+          }).then(res => {
+            this.$message({
+              type: 'success',
+              message: '保存成功'
+            })
+            // 发表成功跳转至文章列表页
+            this.$router.push('/home/articles')
+          })
         }
       })
     }
