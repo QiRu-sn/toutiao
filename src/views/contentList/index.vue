@@ -34,7 +34,7 @@
                 </el-form-item>
             </el-form>
       </el-card>
-      <el-card>
+      <el-card v-loading='loading'>
         <el-row slot="header" class="clearfix">
             <span>共找到{{page.total}}条符合条件的内容</span>
         </el-row>
@@ -79,6 +79,7 @@
 export default {
   data () {
     return {
+      loading: false,
       value: '',
       channels: [],
       searchForm: {
@@ -106,10 +107,12 @@ export default {
     },
     // 获取文章内容
     getContent (params) {
+      this.loading = true
       this.$axios({
         url: '/articles',
         params
       }).then(res => {
+        this.loading = false
         this.list = res.data.results
         this.page.total = res.data.total_count
       })
