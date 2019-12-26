@@ -48,7 +48,7 @@ export default {
           type: 0,
           images: []
         },
-        channel_id: ''
+        channel_id: null
       },
       rules: {
         title: [{ required: true, message: '请输入文章标题', trigger: 'blur' }, { max: 30, min: 5, message: '请输入文章标题为5-30字之间', trigger: 'blur' }],
@@ -90,9 +90,12 @@ export default {
       this.$refs.myForm.validate(isOK => {
         if (isOK) {
           // 校验通过则调用接口发表文章
+          // 根据articleID判断是修改文章还是发布文章
+          debugger
+          let { articleID } = this.$route.params
           this.$axios({
-            url: '/articles',
-            method: 'post',
+            url: articleID ? `/articles/${articleID}` : '/articles',
+            method: articleID ? 'put' : 'post',
             params: { draft },
             data: this.formData
           }).then(res => {
@@ -105,10 +108,20 @@ export default {
           })
         }
       })
+    },
+    // 通过ID获取文章数据
+    getAritcleByID (articleID) {
+      this.$axios({
+        url: `/articles/${articleID}`
+      }).then(res => {
+        this.formData = res.data
+      })
     }
   },
   created () {
     this.getChannels()
+    let { articleID } = this.$route.params
+    articleID && this.getAritcleByID(articleID)
   }
 }
 </script>
