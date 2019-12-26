@@ -13,15 +13,17 @@
                 </div>
             </el-form-item>
             <el-form-item label="封面">
-                <el-radio-group style="margin-left:70px;" v-model="formData.cover.type">
+                <el-radio-group @change="changeType" style="margin-left:70px;" v-model="formData.cover.type">
                     <el-radio :label="1">单图</el-radio>
                     <el-radio :label="3">三图</el-radio>
                     <el-radio :label="0">无图</el-radio>
                     <el-radio :label="-1">自动</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="频道 :" prop="channel_id">
-                <el-select  placeholder="请选择" style="margin-left:50px;margin-bottom:30px;" v-model="formData.channel_id">
+            <!-- 封面组件 -->
+            <coverImg :list="formData.cover.images"></coverImg>
+            <el-form-item label="频道 :" prop="channel_id" >
+                <el-select   placeholder="请选择" style="margin-left:50px;margin-bottom:30px;" v-model="formData.channel_id">
                     <el-option v-for="item in channels" :key="item.id" :label='item.name' :value='item.id'></el-option>
                 </el-select>
             </el-form-item>
@@ -84,6 +86,7 @@ export default {
         this.channels = res.data.channels
       })
     },
+    // 获取文章内容
     getAritcles (draft) {
       // 手动校验
       this.$refs.myForm.validate(isOK => {
@@ -115,6 +118,17 @@ export default {
       }).then(res => {
         this.formData = res.data
       })
+    },
+    // 封面按钮改变事件
+    changeType () {
+      let img = this.formData.cover
+      if (img.type === 0 || img.type === -1) {
+        img.images = []
+      } else if (img.type === 1) {
+        img.images = ['']
+      } else if (img.type === 3) {
+        img.images = ['', '', '']
+      }
     }
   },
   created () {
