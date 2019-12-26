@@ -6,6 +6,7 @@ import './style/index.less'
 import axios from './utils/request'
 import comIndex from './components/index.js'
 import router from './permission'
+import echarts from 'echarts'
 
 Vue.config.productionTip = false
 
@@ -13,6 +14,7 @@ Vue.use(ElementUI)
 Vue.use(comIndex)
 
 Vue.prototype.$axios = axios
+Vue.prototype.$echarts = echarts
 
 new Vue({
   router,

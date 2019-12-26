@@ -36,6 +36,10 @@ const routes = [
       {
         path: '/home/publish/:articleID',
         component: () => import('../views/publish')
+      },
+      {
+        path: '/home/Graphic_data',
+        component: () => import('../views/graphic')
       }
     ]
   },
