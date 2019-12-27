@@ -40,6 +40,10 @@ const routes = [
       {
         path: '/home/Graphic_data',
         component: () => import('../views/graphic')
+      },
+      {
+        path: '/home/userInfo',
+        component: () => import('../views/userInfo')
       }
     ]
   },

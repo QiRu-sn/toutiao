@@ -4,8 +4,8 @@
         <img src="../../assets/img/logo_admin.png" alt="">
     </div>
     <el-menu router background-color='#353b4e' text-color='#adafb5' active-text-color='#ffd04b' style="border-right:none">
-        <el-menu-item>
-          <span slot="title" index='/home'>首页</span>
+        <el-menu-item  index='/home'>
+          <span slot="title">首页</span>
         </el-menu-item>
         <el-submenu index='1'>
             <template slot="title">
@@ -25,8 +25,8 @@
             <el-menu-item index='/home/fans_portrait'>粉丝画像</el-menu-item>
             <el-menu-item index='/home/fans_list'>粉丝列表</el-menu-item>
         </el-submenu>
-        <el-menu-item>
-            <span slot="title" index='/home/userInfo'>账户信息</span>
+        <el-menu-item index='/home/userInfo'>
+            <span slot="title">账户信息</span>
         </el-menu-item>
     </el-menu>
 </div>
