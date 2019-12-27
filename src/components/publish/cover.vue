@@ -9,9 +9,9 @@
         <el-dialog :visible="visibleDialog" @close="closeDialog" >
             <uploadCover @selectImg='receiveImg'></uploadCover>
             <el-row type="flex" justify="center">
-            <el-button @click='visibleDialog=false'>取消</el-button>
-            <el-button type="primary">确定</el-button>
-      </el-row>
+                <el-button @click='visibleDialog=false'>取消</el-button>
+                <el-button type="primary">确定</el-button>
+            </el-row>
         </el-dialog>
     </div>
 </template>

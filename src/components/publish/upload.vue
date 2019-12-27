@@ -29,20 +29,13 @@
                 </el-row>
             </el-tab-pane>
             <el-tab-pane label="上传图片" name="upload">
-                <div class="default">
-                    <img src="../../assets/img/pic_bg.png" alt="">
-                </div>
                 <el-upload
                     class="upload-demo"
-                    ref="upload"
                     action=""
-                    :auto-upload="false">
-                    <span style="float:left;margin-right:20px;height:30px;line-height:30px;">用户图片</span>
-                    <div style="float:left">
-                        <el-button slot="trigger" size="small" type="primary">点击选择图片</el-button>
-                    </div>
-                    <div style="margin-left:40px;margin-top:40px;">
-                    <el-button style="margin-left: 10px;" size="small" type="primary">开始上传</el-button>
+                    :show-file-list="false"
+                    :http-request="uploadImg">
+                    <div>
+                      <img style="margin-left:150%" :src="defaultImage" alt="">
                     </div>
                 </el-upload>
             </el-tab-pane>
@@ -57,7 +50,7 @@ export default {
       activeName: 'cover',
       name: 'all',
       list: [],
-      image: '',
+      defaultImage: require('../../assets/img/pic_bg.png'),
       page: {
         currentPage: 1,
         pageSize: 10,
@@ -88,6 +81,18 @@ export default {
     // 图片被选中
     clickImg (url) {
       this.$emit('selectImg', url)
+    },
+    // 上传图片
+    uploadImg (params) {
+      let data = new FormData()
+      data.append('image', params.file)
+      this.$axios({
+        url: '/user/images',
+        method: 'post',
+        data
+      }).then(result => {
+        this.$emit('selectImg', result.data.url)
+      })
     }
   },
   created () {
@@ -112,14 +117,5 @@ export default {
         height:100%;
     }
 }
-}
-.default{
-    width:300px;
-    height:200px;
-    margin: 30px auto;
-    img{
-        width: 100%;
-        height: 100%;
-    }
 }
 </style>
