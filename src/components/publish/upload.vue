@@ -1,6 +1,6 @@
 <template>
   <div>
-      <el-tabs  v-model="activeName" type="card">
+      <el-tabs  v-model="activeName" type="card" v-loading='loading'>
             <el-tab-pane label="素材库" name="cover">
                 <el-tabs v-model="name" type="card" primary @tab-click='getMaterial'>
                     <el-tab-pane label="全部" name="all">
@@ -47,6 +47,7 @@
 export default {
   data () {
     return {
+      loading: false,
       activeName: 'cover',
       name: 'all',
       list: [],
@@ -61,6 +62,7 @@ export default {
   methods: {
     //  获取全部及收藏图片内容
     getMaterial () {
+      this.loading = true
       this.$axios({
         url: '/user/images',
         params: {
@@ -69,6 +71,7 @@ export default {
           per_page: this.page.pageSize
         }
       }).then(res => {
+        this.loading = false
         this.list = res.data.results
         this.page.total = res.data.total_count
       })
