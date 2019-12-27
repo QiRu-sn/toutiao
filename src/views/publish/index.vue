@@ -21,7 +21,7 @@
                 </el-radio-group>
             </el-form-item>
             <!-- 封面组件 -->
-            <coverImg :list="formData.cover.images"></coverImg>
+            <coverImg :list="formData.cover.images" @selectOneImg='receiveImg'></coverImg>
             <el-form-item label="频道 :" prop="channel_id" >
                 <el-select   placeholder="请选择" style="margin-left:50px;margin-bottom:30px;" v-model="formData.channel_id">
                     <el-option v-for="item in channels" :key="item.id" :label='item.name' :value='item.id'></el-option>
@@ -93,7 +93,6 @@ export default {
         if (isOK) {
           // 校验通过则调用接口发表文章
           // 根据articleID判断是修改文章还是发布文章
-          debugger
           let { articleID } = this.$route.params
           this.$axios({
             url: articleID ? `/articles/${articleID}` : '/articles',
@@ -129,7 +128,13 @@ export default {
       } else if (img.type === 3) {
         img.images = ['', '', '']
       }
+    },
+    receiveImg (url, index) {
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => {
+        return i === index ? url : item
+      })
     }
+
   },
   created () {
     this.getChannels()

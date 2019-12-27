@@ -6,14 +6,14 @@
                     <el-tab-pane label="全部" name="all">
                         <div class="imgList" >
                             <el-card class="img-card" v-for="item in list" :key='item.id' :body-style="{ padding: '0px' }">
-                                <img :src="item.url" alt="" @click="clickImg(item.id)">
+                                <img :src="item.url" alt="" @click="clickImg(item.url)">
                             </el-card>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="收藏" name="collect">
                         <div class="imgList" >
                             <el-card class="img-card" v-for="item in list" :key='item.id' :body-style="{ padding: '0px' }">
-                                <img :src="item.url" alt="" @click="clickImg(item.id)">
+                                <img :src="item.url" alt="" @click="clickImg(item.url)">
                             </el-card>
                         </div>
                     </el-tab-pane>
@@ -35,7 +35,7 @@
                 <el-upload
                     class="upload-demo"
                     ref="upload"
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action=""
                     :auto-upload="false">
                     <span style="float:left;margin-right:20px;height:30px;line-height:30px;">用户图片</span>
                     <div style="float:left">
@@ -47,10 +47,7 @@
                 </el-upload>
             </el-tab-pane>
       </el-tabs>
-      <el-row type="flex" justify="center">
-            <el-button>取消</el-button>
-            <el-button type="primary">确定</el-button>
-      </el-row>
+
   </div>
 </template>
 <script>
@@ -89,8 +86,8 @@ export default {
       this.getMaterial()
     },
     // 图片被选中
-    clickImg (id) {
-      alert(id)
+    clickImg (url) {
+      this.$emit('selectImg', url)
     }
   },
   created () {
