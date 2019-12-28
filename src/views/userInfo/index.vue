@@ -11,12 +11,18 @@
                     <el-upload action="#" :show-file-list='false' :http-request='uploadImg'><el-link type='primary'>更换头像</el-link></el-upload>
                 </div>
                 <div class="intro">
-                    <div style="height:40px;line-height:40px;">{{userInfo.name}}</div>
-                    <div style="height:40px;font-size:12px;color:#999;">{{userInfo.intro}}</div>
+                    <el-form>
+                        <el-form-item>
+                            <el-input v-model="userInfo.name"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-input v-model="userInfo.intro"></el-input>
+                        </el-form-item>
+                    </el-form>
                 </div>
             </div>
             <div>
-                <el-link  type='primary'>修改</el-link>
+                <el-link  type='primary' @click='saveUserInfo'>修改</el-link>
             </div>
         </el-row>
         <el-row type="flex" style="margin-left:20px;height:80px;line-height:80px;font-size:14px;">
@@ -40,12 +46,12 @@
             </div>
         </el-row>
         <el-row type="flex" justify="space-between" style="margin-left:6px;height:80px;line-height:80px;font-size:14px;">
-            <div>
-            <span style="margin-left:60px;">邮箱</span>
-            <span style="margin-left:40px;">{{userInfo.email}}</span>
+            <div style="display:flex">
+                <span style="width:100px;margin-left:40px;">邮箱</span>
+                <el-input style="margin-left:10px;" v-model="userInfo.email"></el-input>
             </div>
             <div>
-                <el-link type='primary'>修改邮箱</el-link>
+                <el-link type='primary' @click='saveUserInfo'>修改邮箱</el-link>
             </div>
         </el-row>
     </div>
@@ -84,9 +90,20 @@ export default {
         method: 'patch',
         data
       }).then(res => {
-        console.log(res)
-
         this.userInfo.photo = res.data.photo
+      })
+    },
+    // 修改用户名及简介
+    saveUserInfo () {
+      this.$axios({
+        url: '/user/profile',
+        method: 'patch',
+        data: this.userInfo
+      }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '修改成功'
+        })
       })
     }
   },
