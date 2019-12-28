@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus'
 export default {
   data () {
     return {
@@ -91,6 +92,8 @@ export default {
         data
       }).then(res => {
         this.userInfo.photo = res.data.photo
+        this.$message({ type: 'success', message: '上传成功' })
+        eventBus.$emit('updateUserInfo')
       })
     },
     // 修改用户名及简介
@@ -104,6 +107,7 @@ export default {
           type: 'success',
           message: '修改成功'
         })
+        eventBus.$emit('updateUserInfo')
       })
     }
   },

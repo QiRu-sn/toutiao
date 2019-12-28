@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus'
 export default {
   data () {
     return {
@@ -52,18 +53,24 @@ export default {
         window.localStorage.removeItem('token')
         this.$router.push('/login')
       }
+    },
+    getUserInfo () {
+      var token = window.localStorage.getItem('token')
+      this.$axios({
+        url: '/user/profile',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(res => {
+        this.userInfo = res.data
+      })
     }
   },
   //  加载个人信息
   created () {
-    var token = window.localStorage.getItem('token')
-    this.$axios({
-      url: '/user/profile',
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then(res => {
-      this.userInfo = res.data
+    this.getUserInfo()
+    eventBus.$on('updateUserInfo', () => {
+      this.getUserInfo()
     })
   }
 }
