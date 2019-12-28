@@ -1,5 +1,5 @@
 <template>
-<el-card>
+<el-card v-loading='loading'>
     <bread-crumb slot="header">
         <template slot="title">账户信息</template>
     </bread-crumb>
@@ -63,6 +63,7 @@ import eventBus from '../../utils/eventBus'
 export default {
   data () {
     return {
+      loading: false,
       userInfo: {
         name: '',
         intro: '',
@@ -76,9 +77,11 @@ export default {
   methods: {
     // 获取用户基本信息
     getUserInfo () {
+      this.loading = true
       this.$axios({
         url: '/user/profile'
       }).then(res => {
+        this.loading = false
         this.userInfo = res.data
       })
     },
@@ -113,6 +116,7 @@ export default {
   },
   created () {
     this.getUserInfo()
+    eventBus.$emit('updateUserInfo')
   }
 
 }

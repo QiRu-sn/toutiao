@@ -13,7 +13,11 @@
             <el-tab-pane primary label="全部" name='all'>
               <div class="imgList">
                 <el-card class="img-card" v-for="item in list" :key='item.id' :body-style="{ padding: '0px' }">
-                  <img :src="item.url" alt="">
+                  <el-image
+                    style="width: 100%; height: 100%"
+                    :src="item.url"
+                    :preview-src-list="srcList">
+                  </el-image>
                   <el-row class="imgIco">
                     <i @click='collandcan(item)' :style="{color:item.is_collected?'red':'#000'}" class='el-icon-star-on'></i>
                     <i @click='delImg(item)' class="el-icon-delete-solid"></i>
@@ -24,7 +28,11 @@
             <el-tab-pane label="收藏" name='collect'>
               <div class="imgList">
                 <el-card class="img-card" v-for="item in list" :key='item.id' :body-style="{ padding: '0px' }">
-                  <img :src="item.url" alt="">
+                  <el-image
+                    style="width: 100%; height: 100%"
+                    :src="item.url"
+                    :preview-src-list="srcList">
+                  </el-image>
                   <el-row class="imgIco">
                     <i @click='collandcan(item)' :style="{color:item.is_collected?'red':'#000'}" class='el-icon-star-on'></i>
                     <i @click='delImg(item)' class="el-icon-delete-solid"></i>
@@ -55,7 +63,8 @@ export default {
         currentPage: 1,
         pageSize: 12,
         total: 0
-      }
+      },
+      srcList: []
     }
   },
   methods: {
@@ -69,6 +78,10 @@ export default {
         }
       }).then(res => {
         this.list = res.data.results
+        console.log(res.data.results)
+        res.data.results.forEach((item) => {
+          this.srcList.push(item.url)
+        })
         this.page.total = res.data.total_count
       })
     },
