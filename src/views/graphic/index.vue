@@ -40,10 +40,10 @@
       <el-row type="flex" justify="start" style="padding-left:30px;"><span style="flex:50%;">图文数据</span><span style="flex:50%;">图文数据</span></el-row>
       <el-row class="data">
           <div class="graphic_count" style="position:relative">
-              <div id="countChart" style="width: 250px;height:250px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+              <div class="countChart" style="width: 250px;height:250px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
           </div>
           <div class="graphic_count" style="position:relative">
-              <div id="countsChart" style="width: 250px;height:250px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+              <div class="countChart" style="width: 250px;height:250px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
           </div>
       </el-row>
   </el-card>
@@ -55,8 +55,53 @@ export default {
     echartsfans () {
     // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById('myChart'))
-      let countChart = this.$echarts.init(document.getElementById('countChart'))
-      let countsChart = this.$echarts.init(document.getElementById('countsChart'))
+      var list = document.getElementsByClassName('countChart')
+      list.forEach(item => {
+        this.$echarts.init(item).setOption({
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
+          },
+          color: ['#38B0DE', '#ADEAEA', '#9370DB'],
+          legend: {
+            orient: 'vertical',
+            x: 'left',
+            data: ['推荐', '推荐', '推荐']
+          },
+          series: [
+            {
+              name: '图文数据',
+              type: 'pie',
+              radius: ['50%', '70%'],
+              avoidLabelOverlap: false,
+              label: {
+                normal: {
+                  show: false,
+                  position: 'center'
+                },
+                emphasis: {
+                  show: true,
+                  textStyle: {
+                    fontSize: '30',
+                    fontWeight: 'bold'
+                  }
+                }
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: [
+                { value: 335, name: '平均阅读进度' },
+                { value: 310, name: '图文数据跳出率' },
+                { value: 234, name: '平均阅读速度' }
+              ]
+            }
+          ]
+        })
+      })
+
       // 绘制图表
       myChart.setOption({
         color: '#38B0DE',
@@ -74,92 +119,6 @@ export default {
           smooth: true,
           areaStyle: {}
         }]
-      })
-      countChart.setOption({
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)'
-        },
-        color: ['#38B0DE', '#ADEAEA', '#9370DB'],
-        legend: {
-          orient: 'vertical',
-          x: 'left',
-          data: ['推荐', '推荐', '推荐']
-        },
-        series: [
-          {
-            name: '图文数据',
-            type: 'pie',
-            radius: ['50%', '70%'],
-            avoidLabelOverlap: false,
-            label: {
-              normal: {
-                show: false,
-                position: 'center'
-              },
-              emphasis: {
-                show: true,
-                textStyle: {
-                  fontSize: '30',
-                  fontWeight: 'bold'
-                }
-              }
-            },
-            labelLine: {
-              normal: {
-                show: false
-              }
-            },
-            data: [
-              { value: 335, name: '平均阅读进度' },
-              { value: 310, name: '图文数据跳出率' },
-              { value: 234, name: '平均阅读速度' }
-            ]
-          }
-        ]
-      })
-      countsChart.setOption({
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)'
-        },
-        color: ['#38B0DE', '#ADEAEA', '#9370DB'],
-        legend: {
-          orient: 'vertical',
-          x: 'left',
-          data: ['推荐', '推荐', '推荐']
-        },
-        series: [
-          {
-            name: '图文数据',
-            type: 'pie',
-            radius: ['50%', '70%'],
-            avoidLabelOverlap: false,
-            label: {
-              normal: {
-                show: false,
-                position: 'center'
-              },
-              emphasis: {
-                show: true,
-                textStyle: {
-                  fontSize: '30',
-                  fontWeight: 'bold'
-                }
-              }
-            },
-            labelLine: {
-              normal: {
-                show: false
-              }
-            },
-            data: [
-              { value: 335, name: '平均阅读进度' },
-              { value: 310, name: '图文数据跳出率' },
-              { value: 234, name: '平均阅读速度' }
-            ]
-          }
-        ]
       })
     }
   },

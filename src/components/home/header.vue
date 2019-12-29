@@ -2,7 +2,7 @@
 <el-row class="headerContainer" type="flex" align="middle">
     <!-- 头部左侧企业名称区域 -->
     <el-col :span='12' class="left">
-        <i class="el-icon-s-unfold"></i>
+        <i @click='openOrcol'  :class="{'el-icon-s-unfold':collapse,'el-icon-s-fold':!collapse}"></i>
         <span>江苏传智播客教育科技股份有限公司</span>
     </el-col>
     <!-- 右侧区域 -->
@@ -39,10 +39,17 @@ export default {
   data () {
     return {
       userInfo: {},
-      defaultImg: require('../../assets/img/user.jpeg')
+      defaultImg: require('../../assets/img/user.jpeg'),
+      collapse: false// 默认左侧面板展开
     }
   },
   methods: {
+    // 打开或关闭左侧折叠面板
+    openOrcol () {
+      this.collapse = !this.collapse
+      // 触发事件去通知其他组件修改左侧面板折叠或打开
+      eventBus.$emit('changeCollapse')
+    },
     //  点击头部个人信息区域触发事件
     clickDropdown (command) {
       if (command === 'info') {
