@@ -1,7 +1,11 @@
 // 导航守卫
 import router from '../router'
+import progress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 router.beforeEach(function (to, from, next) {
+  // 打开进度条
+  progress.start()
   // 判断主页所有页面均需要拦截
   if (to.path.startsWith('/home')) {
     // 获取token
@@ -16,5 +20,9 @@ router.beforeEach(function (to, from, next) {
   } else {
     next()
   }
+})
+router.afterEach(() => {
+  // 关闭进度条
+  progress.done()
 })
 export default router
