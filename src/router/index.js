@@ -50,6 +50,11 @@ const routes = [
   {
     path: '/login',
     component: login
+  },
+  // 404页面
+  {
+    path: '*',
+    component: () => import('../views/404')
   }
   // {
   //   path: '/about',
