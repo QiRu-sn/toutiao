@@ -61,20 +61,19 @@ export default {
   },
   methods: {
     //  获取全部及收藏图片内容
-    getMaterial () {
+    async getMaterial () {
       this.loading = true
-      this.$axios({
+      let res = await this.$axios({
         url: '/user/images',
         params: {
           collect: this.name === 'collect',
           page: this.page.currentPage,
           per_page: this.page.pageSize
         }
-      }).then(res => {
-        this.loading = false
-        this.list = res.data.results
-        this.page.total = res.data.total_count
       })
+      this.loading = false
+      this.list = res.data.results
+      this.page.total = res.data.total_count
     },
     // 改变页码
     changePage (newPage) {
@@ -86,16 +85,15 @@ export default {
       this.$emit('selectImg', url)
     },
     // 上传图片
-    uploadImg (params) {
+    async uploadImg (params) {
       let data = new FormData()
       data.append('image', params.file)
-      this.$axios({
+      let res = await this.$axios({
         url: '/user/images',
         method: 'post',
         data
-      }).then(result => {
-        this.$emit('selectImg', result.data.url)
       })
+      this.$emit('selectImg', res.data.url)
     }
   },
   created () {

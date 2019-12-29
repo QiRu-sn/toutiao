@@ -79,44 +79,42 @@ export default {
   },
   methods: {
     //   获取频道列表
-    getChannels () {
-      this.$axios({
+    async getChannels () {
+      let res = await this.$axios({
         url: '/channels'
-      }).then(res => {
-        this.channels = res.data.channels
       })
+      this.channels = res.data.channels
     },
     // 获取文章内容
-    getAritcles (draft) {
+    async getAritcles (draft) {
       // 手动校验
-      this.$refs.myForm.validate(isOK => {
-        if (isOK) {
-          // 校验通过则调用接口发表文章
-          // 根据articleID判断是修改文章还是发布文章
-          let { articleID } = this.$route.params
-          this.$axios({
-            url: articleID ? `/articles/${articleID}` : '/articles',
-            method: articleID ? 'put' : 'post',
-            params: { draft },
-            data: this.formData
-          }).then(res => {
-            this.$message({
-              type: 'success',
-              message: '保存成功'
-            })
-            // 发表成功跳转至文章列表页
-            this.$router.push('/home/articles')
-          })
-        }
-      })
+      await this.$refs.myForm.validate
+      try {
+        // 校验通过则调用接口发表文章
+        // 根据articleID判断是修改文章还是发布文章
+        let { articleID } = this.$route.params
+        await this.$axios({
+          url: articleID ? `/articles/${articleID}` : '/articles',
+          method: articleID ? 'put' : 'post',
+          params: { draft },
+          data: this.formData
+        })
+        this.$message({
+          type: 'success',
+          message: '保存成功'
+        })
+        // 发表成功跳转至文章列表页
+        this.$router.push('/home/articles')
+      } catch (error) {
+
+      }
     },
     // 通过ID获取文章数据
-    getAritcleByID (articleID) {
-      this.$axios({
+    async getAritcleByID (articleID) {
+      let res = await this.$axios({
         url: `/articles/${articleID}`
-      }).then(res => {
-        this.formData = res.data
       })
+      this.formData = res.data
     },
     // 封面按钮改变事件
     changeType () {

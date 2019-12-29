@@ -68,22 +68,20 @@ export default {
     }
   },
   methods: {
-    getMaterial () {
-      this.$axios({
+    async getMaterial () {
+      let res = await this.$axios({
         url: '/user/images',
         params: {
           collect: this.activeName === 'collect',
           page: this.page.currentPage,
           per_page: this.page.pageSize
         }
-      }).then(res => {
-        this.list = res.data.results
-        console.log(res.data.results)
-        res.data.results.forEach((item) => {
-          this.srcList.push(item.url)
-        })
-        this.page.total = res.data.total_count
       })
+      this.list = res.data.results
+      res.data.results.forEach((item) => {
+        this.srcList.push(item.url)
+      })
+      this.page.total = res.data.total_count
     },
     changeTab () {
       this.getMaterial()
@@ -93,41 +91,37 @@ export default {
       this.getMaterial()
     },
     // 上传图片素材
-    uploadImg (params) {
+    async uploadImg (params) {
       this.loading = true
       let data = new FormData()
       data.append('image', params.file)
-      this.$axios({
+      await this.$axios({
         method: 'post',
         url: '/user/images',
         data
-      }).then(res => {
-        this.loading = false
-        this.getMaterial()
       })
+      this.loading = false
+      this.getMaterial()
     },
     // 取消或收藏素材
-    collandcan (item) {
-      this.$axios({
+    async collandcan (item) {
+      await this.$axios({
         url: `/user/images/${item.id}`,
         method: 'put',
         data: {
           collect: !item.is_collected
         }
-      }).then(res => {
-        this.getMaterial()
       })
+      this.getMaterial()
     },
     // 删除图片素材
-    delImg (item) {
-      this.$confirm('您确定要删除这张图片吗？').then(() => {
-        this.$axios({
-          method: 'delete',
-          url: `/user/images/${item.id}`
-        }).then(() => {
-          this.getMaterial()
-        })
+    async delImg (item) {
+      await this.$confirm('您确定要删除这张图片吗？')
+      await this.$axios({
+        method: 'delete',
+        url: `/user/images/${item.id}`
       })
+      this.getMaterial()
     }
   },
   created () {

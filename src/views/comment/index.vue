@@ -45,36 +45,33 @@ export default {
     }
   },
   methods: {
-    loadData () {
+    async loadData () {
       this.loading = true
-      this.$axios({
+      let res = await this.$axios({
         url: '/articles',
         params: { response_type: 'comment', page: this.page.currentPage, per_page: this.page.pageSize }
-      }).then(res => {
-        this.loading = false
-        this.list = res.data.results
-        this.page.currentPage = res.data.page
-        this.page.pageSize = res.data.per_page
-        this.page.total = res.data.total_count
       })
+      this.loading = false
+      this.list = res.data.results
+      this.page.currentPage = res.data.page
+      this.page.pageSize = res.data.per_page
+      this.page.total = res.data.total_count
     },
     formatterStatus (row, column, cellValue) {
       return cellValue ? '正常' : '关闭'
     },
-    openClose (row) {
+    async openClose (row) {
       let msg = row.comment_status ? '关闭' : '打开'
-      this.$confirm(`您确定要${msg}评论吗?`, '提示').then(() => {
-        this.$axios({
-          url: '/comments/status',
-          method: 'put',
-          params: { article_id: row.id.toString() },
-          data: {
-            allow_comment: !row.comment_status
-          }
-        }).then(res => {
-          this.loadData()
-        })
+      await this.$confirm(`您确定要${msg}评论吗?`, '提示')
+      await this.$axios({
+        url: '/comments/status',
+        method: 'put',
+        params: { article_id: row.id.toString() },
+        data: {
+          allow_comment: !row.comment_status
+        }
       })
+      this.loadData()
     },
     // 分页功能
     changePage (newPage) {

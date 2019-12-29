@@ -98,24 +98,22 @@ export default {
   },
   methods: {
     //   获取频道列表
-    getChannels () {
-      this.$axios({
+    async getChannels () {
+      let res = await this.$axios({
         url: '/channels'
-      }).then(res => {
-        this.channels = res.data.channels
       })
+      this.channels = res.data.channels
     },
     // 获取文章内容
-    getContent (params) {
+    async getContent (params) {
       this.loading = true
-      this.$axios({
+      let res = await this.$axios({
         url: '/articles',
         params
-      }).then(res => {
-        this.loading = false
-        this.list = res.data.results
-        this.page.total = res.data.total_count
       })
+      this.loading = false
+      this.list = res.data.results
+      this.page.total = res.data.total_count
     },
     // 搜索筛选
     changeContent () {
@@ -139,19 +137,17 @@ export default {
       this.getContent(params)
     },
     // 删除文章内容
-    delContent (id) {
-      this.$confirm('您确定要删除吗?').then(() => {
-        this.$axios({
-          method: 'delete',
-          url: `/articles/${id.toString()}`
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          })
-          this.getPageContent()
-        })
+    async delContent (id) {
+      await this.$confirm('您确定要删除吗?')
+      await this.$axios({
+        method: 'delete',
+        url: `/articles/${id.toString()}`
       })
+      this.$message({
+        type: 'success',
+        message: '删除成功'
+      })
+      this.getPageContent()
     },
     // 编辑文章内容
     editContent (id) {

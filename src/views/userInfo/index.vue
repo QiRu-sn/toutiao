@@ -76,42 +76,39 @@ export default {
   },
   methods: {
     // 获取用户基本信息
-    getUserInfo () {
+    async getUserInfo () {
       this.loading = true
-      this.$axios({
+      let res = await this.$axios({
         url: '/user/profile'
-      }).then(res => {
-        this.loading = false
-        this.userInfo = res.data
       })
+      this.loading = false
+      this.userInfo = res.data
     },
     // 上传修改头像
-    uploadImg (params) {
+    async uploadImg (params) {
       let data = new FormData()
       data.append('photo', params.file)
-      this.$axios({
+      let res = await this.$axios({
         url: '/user/photo',
         method: 'patch',
         data
-      }).then(res => {
-        this.userInfo.photo = res.data.photo
-        this.$message({ type: 'success', message: '上传成功' })
-        eventBus.$emit('updateUserInfo')
       })
+      this.userInfo.photo = res.data.photo
+      this.$message({ type: 'success', message: '上传成功' })
+      eventBus.$emit('updateUserInfo')
     },
     // 修改用户名及简介
-    saveUserInfo () {
-      this.$axios({
+    async saveUserInfo () {
+      await this.$axios({
         url: '/user/profile',
         method: 'patch',
         data: this.userInfo
-      }).then(res => {
-        this.$message({
-          type: 'success',
-          message: '修改成功'
-        })
-        eventBus.$emit('updateUserInfo')
       })
+      this.$message({
+        type: 'success',
+        message: '修改成功'
+      })
+      eventBus.$emit('updateUserInfo')
     }
   },
   created () {

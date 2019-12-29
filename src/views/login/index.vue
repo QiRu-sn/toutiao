@@ -43,15 +43,16 @@ export default {
     }
   },
   methods: {
-    login () {
-      this.$refs.myForm.validate(isOK => {
-        if (isOK) {
-          this.$axios.post('/authorizations', this.ruleForm).then(res => {
-            window.localStorage.setItem('token', res.data.token)
-            this.$router.push('/home')
-          })
-        }
-      })
+    async login () {
+      try {
+        await this.$refs.myForm.validate
+        this.$axios.post('/authorizations', this.ruleForm).then(res => {
+          window.localStorage.setItem('token', res.data.token)
+          this.$router.push('/home')
+        })
+      } catch (error) {
+
+      }
     }
   }
 }

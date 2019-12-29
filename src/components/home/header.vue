@@ -61,16 +61,15 @@ export default {
         this.$router.push('/login')
       }
     },
-    getUserInfo () {
+    async getUserInfo () {
       var token = window.localStorage.getItem('token')
-      this.$axios({
+      let res = await this.$axios({
         url: '/user/profile',
         headers: {
           Authorization: `Bearer ${token}`
         }
-      }).then(res => {
-        this.userInfo = res.data
       })
+      this.userInfo = res.data
     }
   },
   //  加载个人信息
