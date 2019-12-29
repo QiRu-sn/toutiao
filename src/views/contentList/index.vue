@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import { getChannels } from '../../actions/articles'
 export default {
   data () {
     return {
@@ -99,9 +100,7 @@ export default {
   methods: {
     //   获取频道列表
     async getChannels () {
-      let res = await this.$axios({
-        url: '/channels'
-      })
+      let res = await getChannels()
       this.channels = res.data.channels
     },
     // 获取文章内容

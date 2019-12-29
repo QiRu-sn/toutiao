@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { getChannels, getArticles } from '../../actions/articles'
 export default {
   data () {
     return {
@@ -80,9 +81,7 @@ export default {
   methods: {
     //   获取频道列表
     async getChannels () {
-      let res = await this.$axios({
-        url: '/channels'
-      })
+      let res = await getChannels()
       this.channels = res.data.channels
     },
     // 获取文章内容
@@ -93,12 +92,8 @@ export default {
         // 校验通过则调用接口发表文章
         // 根据articleID判断是修改文章还是发布文章
         let { articleID } = this.$route.params
-        await this.$axios({
-          url: articleID ? `/articles/${articleID}` : '/articles',
-          method: articleID ? 'put' : 'post',
-          params: { draft },
-          data: this.formData
-        })
+        let method = articleID ? 'put' : 'post'
+        await getArticles(articleID, method, { draft }, this.formData)
         this.$message({
           type: 'success',
           message: '保存成功'
@@ -111,9 +106,7 @@ export default {
     },
     // 通过ID获取文章数据
     async getAritcleByID (articleID) {
-      let res = await this.$axios({
-        url: `/articles/${articleID}`
-      })
+      let res = await getArticles(articleID, null, null, null)
       this.formData = res.data
     },
     // 封面按钮改变事件

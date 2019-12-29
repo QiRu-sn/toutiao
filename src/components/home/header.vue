@@ -35,6 +35,7 @@
 
 <script>
 import eventBus from '../../utils/eventBus'
+import { getUser } from '../../actions/user'
 export default {
   data () {
     return {
@@ -62,13 +63,7 @@ export default {
       }
     },
     async getUserInfo () {
-      var token = window.localStorage.getItem('token')
-      let res = await this.$axios({
-        url: '/user/profile',
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      let res = await getUser()
       this.userInfo = res.data
     }
   },

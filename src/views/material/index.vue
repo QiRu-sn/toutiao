@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import { getUserImg } from '../../actions/user'
 export default {
   data () {
     return {
@@ -69,14 +70,12 @@ export default {
   },
   methods: {
     async getMaterial () {
-      let res = await this.$axios({
-        url: '/user/images',
-        params: {
-          collect: this.activeName === 'collect',
-          page: this.page.currentPage,
-          per_page: this.page.pageSize
-        }
-      })
+      let params = {
+        collect: this.activeName === 'collect',
+        page: this.page.currentPage,
+        per_page: this.page.pageSize
+      }
+      let res = await getUserImg(null, params, null, null)
       this.list = res.data.results
       res.data.results.forEach((item) => {
         this.srcList.push(item.url)
@@ -95,32 +94,22 @@ export default {
       this.loading = true
       let data = new FormData()
       data.append('image', params.file)
-      await this.$axios({
-        method: 'post',
-        url: '/user/images',
-        data
-      })
+      await getUserImg('post', null, data, null)
       this.loading = false
       this.getMaterial()
     },
     // 取消或收藏素材
     async collandcan (item) {
-      await this.$axios({
-        url: `/user/images/${item.id}`,
-        method: 'put',
-        data: {
-          collect: !item.is_collected
-        }
-      })
+      let data = {
+        collect: !item.is_collected
+      }
+      await getUserImg('put', null, data, item.id)
       this.getMaterial()
     },
     // 删除图片素材
     async delImg (item) {
       await this.$confirm('您确定要删除这张图片吗？')
-      await this.$axios({
-        method: 'delete',
-        url: `/user/images/${item.id}`
-      })
+      await getUserImg('delete', null, null, item.id)
       this.getMaterial()
     }
   },

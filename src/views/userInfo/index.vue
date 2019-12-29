@@ -60,6 +60,7 @@
 
 <script>
 import eventBus from '../../utils/eventBus'
+import { getUser } from '../../actions/user'
 export default {
   data () {
     return {
@@ -78,9 +79,7 @@ export default {
     // 获取用户基本信息
     async getUserInfo () {
       this.loading = true
-      let res = await this.$axios({
-        url: '/user/profile'
-      })
+      let res = await getUser()
       this.loading = false
       this.userInfo = res.data
     },
@@ -99,11 +98,7 @@ export default {
     },
     // 修改用户名及简介
     async saveUserInfo () {
-      await this.$axios({
-        url: '/user/profile',
-        method: 'patch',
-        data: this.userInfo
-      })
+      await getUser('patch', this.userInfo)
       this.$message({
         type: 'success',
         message: '修改成功'
